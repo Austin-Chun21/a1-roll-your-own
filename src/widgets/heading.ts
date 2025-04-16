@@ -12,8 +12,8 @@ class Heading extends Widget{
     private _text_x: number;
     private defaultText: string= "Heading";
     private defaultFontSize: number = 18;
-    private defaultWidth: number = 80;
-    private defaultHeight: number = 30;
+    private defaultWidth: number = 120;
+    private defaultHeight: number = 40;
 
     constructor(parent:Window){
         super(parent);
@@ -46,6 +46,7 @@ class Heading extends Widget{
         this._fontSize= size;
         this.update();
     }
+
 
     private positionText(){
         let box:Box = this._text.bbox();
@@ -96,18 +97,28 @@ class Heading extends Widget{
     }
     idledownState(): void {
     }
+    //Log that the button has been pressed
     pressedState(): void {
+        console.log("Button has been pressed");
     }
+    //Log the press release
     pressReleaseState(): void {
+        console.log("Click complete");
     }
+    //Log hovering over the button 
     hoverState(): void {
+        console.log("Hovered over widget");
     }
     hoverPressedState(): void {
     }
     pressedoutState(): void {
     }
     moveState(): void { }
-    keyupState(): void { }
+    //Log if a key has been pressed
+    keyupState(): void {
+        console.log("Key has been pressed");
+     }
+     
 }
 
 export {Heading}

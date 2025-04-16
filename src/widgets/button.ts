@@ -11,10 +11,13 @@ class Button extends Widget{
     private _fontSize: number;
     private _text_y: number;
     private _text_x: number;
-    private defaultText: string= "Button";
-    private defaultFontSize: number = 18;
-    private defaultWidth: number = 80;
+    private defaultText: string= "Custom Text";
+    private defaultFontSize: number = 28;
+    private defaultWidth: number = 220;
     private defaultHeight: number = 30;
+    private _clickHandler?: () => void;
+    private isClicked: boolean = false;
+
 
     constructor(parent:Window){
         super(parent);
@@ -31,10 +34,34 @@ class Button extends Widget{
         this.setState(new IdleUpWidgetState());
         // prevent text selection
         this.selectable = false;
+        this.backcolor = "white";
+        
     }
 
     set fontSize(size:number){
         this._fontSize= size;
+        this.update();
+    }
+
+    set btnLabel(value:string){
+        this._input = value;
+        this.update();
+    }
+
+    get btnLabel():string{
+        return this._input;
+    }
+
+    set btnWidth(width:number){
+        this.width=width;
+        this.update();
+    }
+    get btnWidth(){
+        return this.width;
+    }
+
+    set btnHeight(height:number){
+        this.height = height;
         this.update();
     }
 
@@ -52,6 +79,7 @@ class Button extends Widget{
         this._group = (this.parent as Window).window.group();
         this._rect = this._group.rect(this.width, this.height);
         this._rect.stroke("black");
+        this._rect.fill("white");
         this._text = this._group.text(this._input);
         // Set the outer svg element 
         this.outerSvg = this._group;
@@ -70,48 +98,73 @@ class Button extends Widget{
             this._text.font('size', this._fontSize);
             this._text.text(this._input);
             this.positionText();
+            this._rect.width(this.width).height(this.height);
 
         if(this._rect != null)
-            this._rect.fill(this.backcolor);
+           this._rect.fill(this.backcolor);
         
         super.update();
     }
     
     pressReleaseState(): void{
 
-        if (this.previousState instanceof PressedWidgetState)
+        if (this.previousState instanceof PressedWidgetState) {
             this.raise(new EventArgs(this));
+            this.isClicked = true;
+            //Update backcolor to lightblue 
+            this.backcolor = "lightblue";
+            //Re-render 
+            this.update();
+            //Execute callback if it was registered
+            if(this._clickHandler){
+                this._clickHandler();
+            }
+        }
     }
 
     //TODO: implement the onClick event using a callback passed as a parameter
-    onClick(/*TODO: add callback parameter*/):void{}
+    onClick(callback: () => void):void{
+        //Store callback function 
+        this._clickHandler = callback;
+      
+    }
 
     
     //TODO: give the states something to do! Use these methods to control the visual appearance of your
     //widget
     idleupState(): void {
-        throw new Error("Method not implemented.");
+      
+       
     }
+    //Make white if btn is idle 
     idledownState(): void {
-        throw new Error("Method not implemented.");
+        this._rect.fill("#ffffff");
     }
     pressedState(): void {
-        throw new Error("Method not implemented.");
+        this._rect.fill("light blue");
     }
     hoverState(): void {
-        throw new Error("Method not implemented.");
+       //Turn yellow on btn hover 
+        this._rect.fill("yellow");
+       
+        
     }
     hoverPressedState(): void {
-        throw new Error("Method not implemented.");
+        //Turn btn orange if hoverpressed 
+        if (this._rect) {
+            this._rect.fill("orange");
+            this._rect.animate(200);
+        }
     }
     pressedoutState(): void {
-        throw new Error("Method not implemented.");
+        this._rect.fill("purple");
     }
     moveState(): void {
         throw new Error("Method not implemented.");
     }
     keyupState(keyEvent?: KeyboardEvent): void {
-        throw new Error("Method not implemented.");
+        //Fill the btn with pink if a key is pressed
+        this._rect.fill("pink");
     }
 }
 

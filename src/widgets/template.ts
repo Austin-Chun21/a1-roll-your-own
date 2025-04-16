@@ -3,6 +3,7 @@ import {Window, Widget, RoleType} from "../core/ui";
 // importing code from SVG.js library
 import {Rect} from "../core/ui";
 
+
 class Template extends Widget{
     private _rect: Rect;
     private defaultWidth: number = 80;
@@ -29,7 +30,7 @@ class Template extends Widget{
         // Add a transparent rect on top of text to prevent selection cursor
         this._group.rect(this.width, this.height).opacity(0).attr('id', 0);
 
-        this.backcolor = "silver";
+        this.backcolor = "yellow";
         // register objects that should receive event notifications.
         // for this widget, we want to know when the group or rect objects
         // receive events
